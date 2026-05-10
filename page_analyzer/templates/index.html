@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Анализатор страниц{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+        <div class="p-5 bg-light border rounded-3">
+            <h1 class="display-3">Анализатор страниц</h1>
+            <p class="lead">Бесплатно проверяйте сайты на SEO-пригодность</p>
+            <form action="{{ url_for('create_url_route') }}" method="post">
+                <div class="row g-2">
+                    <div class="col-12 col-md-8">
+                        <input
+                            type="text"
+                            name="url"
+                            value="{{ url }}"
+                            class="form-control form-control-lg{% if error %} is-invalid{% endif %}"
+                            placeholder="https://www.example.com"
+                            required
+                        >
+                        {% if error %}
+                            <div class="invalid-feedback d-block">{{ error }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <button type="submit" class="btn btn-primary btn-lg w-100">ПРОВЕРИТЬ</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

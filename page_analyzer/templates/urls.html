@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Сайты{% endblock %}
+{% block content %}
+<h1>Сайты</h1>
+<table class="table table-bordered table-hover" data-test="urls">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Имя</th>
+        <th>Последняя проверка</th>
+        <th>Код ответа</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for url_item in urls %}
+        <tr>
+            <td>{{ url_item.id }}</td>
+            <td><a href="{{ url_for('show_url', id=url_item.id) }}">{{ url_item.name }}</a></td>
+            <td>{{ url_item.last_check_created_at or "" }}</td>
+            <td>{{ url_item.last_check_status_code or "" }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

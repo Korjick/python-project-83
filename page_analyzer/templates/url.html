@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% macro trim_check_value(value) -%}
+    {%- if value and value|length > 200 -%}
+        {{ value[:200] }}....
+    {%- else -%}
+        {{ value or "" }}
+    {%- endif -%}
+{%- endmacro %}
+{% block title %}{{ url_item.name }}{% endblock %}
+{% block content %}
+<h1>Сайт: {{ url_item.name }}</h1>
+<table class="table table-bordered table-striped" data-test="url">
+    <tbody>
+    <tr>
+        <td>ID</td>
+        <td>{{ url_item.id }}</td>
+    </tr>
+    <tr>
+        <td>Имя</td>
+        <td>{{ url_item.name }}</td>
+    </tr>
+    <tr>
+        <td>Дата создания</td>
+        <td>{{ url_item.created_at }}</td>
+    </tr>
+    </tbody>
+</table>
+<h2 class="mt-5">Проверки</h2>
+<form method="post" action="{{ url_for('create_check', id=url_item.id) }}">
+    <input type="submit" class="btn btn-primary mb-3" value="Запустить проверку">
+</form>
+<table class="table table-bordered" data-test="checks">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Код ответа</th>
+        <th>h1</th>
+        <th>title</th>
+        <th>description</th>
+        <th>Дата создания</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for check in checks %}
+        <tr>
+            <td>{{ check.id }}</td>
+            <td>{{ check.status_code or "" }}</td>
+            <td>{{ trim_check_value(check.h1) }}</td>
+            <td>{{ trim_check_value(check.title) }}</td>
+            <td>{{ trim_check_value(check.description) }}</td>
+            <td>{{ check.created_at }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
