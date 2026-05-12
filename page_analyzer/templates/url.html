@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% macro trim_check_value(value) -%}
     {%- if value and value|length > 200 -%}
-        {{ value[:200] }}....
+        {{ value[:200] }}...
     {%- else -%}
         {{ value or "" }}
     {%- endif -%}
