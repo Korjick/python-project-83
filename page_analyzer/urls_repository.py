@@ -5,7 +5,11 @@ def create_url(name, created_at):
     with get_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(
-                "INSERT INTO urls (name, created_at) VALUES (%s, %s) RETURNING id",
+                """
+                INSERT INTO urls (name, created_at)
+                VALUES (%s, %s)
+                RETURNING id
+                """,
                 (name, created_at),
             )
             row = cursor.fetchone()
@@ -15,7 +19,10 @@ def create_url(name, created_at):
 def get_url_by_name(name):
     with get_connection() as conn:
         with conn.cursor() as cursor:
-            cursor.execute("SELECT id, name, created_at FROM urls WHERE name = %s", (name,))
+            cursor.execute(
+                "SELECT id, name, created_at FROM urls WHERE name = %s",
+                (name,),
+            )
             return cursor.fetchone()
 
 
@@ -78,7 +85,14 @@ def get_url_checks(url_id):
         with conn.cursor() as cursor:
             cursor.execute(
                 """
-                SELECT id, url_id, status_code, h1, title, description, created_at
+                SELECT
+                    id,
+                    url_id,
+                    status_code,
+                    h1,
+                    title,
+                    description,
+                    created_at
                 FROM url_checks
                 WHERE url_id = %s
                 ORDER BY id DESC

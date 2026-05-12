@@ -5,7 +5,15 @@ from urllib.parse import urlparse
 
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
-from flask import Flask, abort, flash, redirect, render_template, request, url_for
+from flask import (
+    Flask,
+    abort,
+    flash,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 import psycopg
 import requests
 import validators
@@ -52,7 +60,11 @@ def extract_seo_data(html):
     )
 
     h1 = normalize_text(h1_tag.get_text(strip=True)) if h1_tag else None
-    title = normalize_text(title_tag.get_text(strip=True)) if title_tag else None
+    title = (
+        normalize_text(title_tag.get_text(strip=True))
+        if title_tag
+        else None
+    )
     description = (
         normalize_text(description_tag.get("content"))
         if description_tag is not None
