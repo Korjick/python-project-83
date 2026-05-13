@@ -1,9 +1,7 @@
 from datetime import datetime, UTC
 import os
 from pathlib import Path
-from urllib.parse import urlparse
 
-from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from flask import (
     Flask,
@@ -16,8 +14,9 @@ from flask import (
 )
 import psycopg
 import requests
-import validators
 
+from page_analyzer.parser import extract_seo_data
+from page_analyzer.url_utils import is_invalid_url, normalize_url
 from page_analyzer.urls_repository import (
     create_url,
     create_url_check,
@@ -32,50 +31,6 @@ load_dotenv(BASE_DIR / ".env")
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "secret-key")
-
-
-def normalize_url(raw_url):
-    parsed_url = urlparse(raw_url)
-    return f"{parsed_url.scheme}://{parsed_url.netloc}"
-
-
-def normalize_text(value):
-    if value is None:
-        return None
-    stripped_value = value.strip()
-    return stripped_value or None
-
-
-def extract_seo_data(html):
-    soup = BeautifulSoup(html, "html.parser")
-
-    h1_tag = soup.find("h1")
-    title_tag = soup.find("title")
-    description_tag = soup.find(
-        "meta",
-        attrs={
-            "name": lambda tag_value: isinstance(tag_value, str)
-            and tag_value.lower() == "description"
-        },
-    )
-
-    h1 = normalize_text(h1_tag.get_text(strip=True)) if h1_tag else None
-    title = (
-        normalize_text(title_tag.get_text(strip=True))
-        if title_tag
-        else None
-    )
-    description = (
-        normalize_text(description_tag.get("content"))
-        if description_tag is not None
-        else None
-    )
-
-    return h1, title, description
-
-
-def is_invalid_url(raw_url):
-    return len(raw_url) > 255 or validators.url(raw_url) is not True
 
 
 @app.get("/")
