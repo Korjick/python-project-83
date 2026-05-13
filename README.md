@@ -1,7 +1,7 @@
 # Page Analyzer
 
 [![Actions Status](https://github.com/Korjick/python-project-83/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Korjick/python-project-83/actions)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Korjick_python-project-83&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Korjick_python-project-83)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Korjick_python-project-83&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Korjick_python-project-83)
 
 Page Analyzer is a Flask web application for checking websites for basic SEO
 metadata. It stores submitted URLs, runs page checks, and shows status codes,
